@@ -7,6 +7,7 @@ def lihat_profil():
 	cursor = db.cursor()
 
 #just comment
+#add_comment
 	sql = "SELECT * FROM employee"
 
 	try:
