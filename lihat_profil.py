@@ -6,25 +6,23 @@ def lihat_profil():
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 
-#just comment
-#add_comment
 	sql = "SELECT * FROM employee"
 
-	try:
+#	try:
 		# Execute the SQL command
-		cursor.execute(sql)
+	cursor.execute(sql)
 		# Fetch all the rows in a list of lists.
-		results = cursor.fetchall()
-		for row in results:
-			fname = row[0]
-			lname = row[1]
-			age = row[2]
-			sex = row[3]
-			income = row[4]
+	results = cursor.fetchall()
+	for row in results:
+		fname = row[0]
+		lname = row[1]
+		age = row[2]
+		sex = row[3]
+		income = row[4]
 			# Now print fetched result
-			print ("nama depan = %s \n lname = %s \n age = %d \n sex = %s \n income = %d \n \n" % (fname, lname, age, sex, income ))
-	except:
-		print ("--Error: unable to fetch data--")
+		print ("nama depan = %s \nlname = %s \nage = %s \nsex = %s \nincome = %s\n\n" % (fname, lname, age, sex, income ))
+#	except:
+#		print ("--Error: unable to fetch data--")
 
 
 	# disconnect from server
