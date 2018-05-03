@@ -41,7 +41,7 @@ class GenerateCnoteRequest(BaseRequest, object):
     def __init__(self, delivery_note):
         super(GenerateCnoteRequest, self).__init__()
         self.error = False
-
+        # frappe.msgprint("brand invoice number: {b}".format(b=delivery_note.brand_invoice_number))
         self.set_olshop_orderid( delivery_note.brand_invoice_number )
 
         #Get Warehouse From Sales Order
@@ -57,7 +57,7 @@ class GenerateCnoteRequest(BaseRequest, object):
 
         company_name = delivery_note.company
         company = frappe.get_doc("Company", company_name)
-        print("company: {0}".format(company))
+        print "company: {0}".format(company)
         self.assign_credentials()
         self.set_olshop_shipper_name(company.company_name)
 
@@ -139,7 +139,7 @@ class GenerateCnoteRequest(BaseRequest, object):
         #Receiver detail
         address_name = delivery_note.shipping_address_name
         # frappe.msgprint("address name: {an}".format(an=address_name))
-        print("address_name: {0}".format(address_name))
+        print "address_name: {0}".format(address_name)
         address = frappe.get_doc("Address", address_name)
         # if(address):
         #     frappe.msgprint("address is true")
@@ -155,15 +155,15 @@ class GenerateCnoteRequest(BaseRequest, object):
 
         #Destination JNE by City Mapping
         customer_city_mapping_name = address.city_mapping
-        # frappe.msgprint(customer_city_mapping_name)
+        frappe.msgprint("city mapping: {cp}".format(cp=customer_city_mapping_name))
         if not frappe.db.exists("City Mapping", customer_city_mapping_name):
             self.error = True
-            # frappe.msgprint("customer city mapping is none")
+            frappe.msgprint("customer city mapping is none")
             return
         customer_city_mapping = frappe.get_doc("City Mapping", customer_city_mapping_name)
         if customer_city_mapping.jne_code is None:
             self.error = True
-            # frappe.msgprint("jne code is none")
+            frappe.msgprint("jne code is none")
             return
         self.set_olshop_dest(customer_city_mapping.jne_code)
 
@@ -175,7 +175,7 @@ class GenerateCnoteRequest(BaseRequest, object):
 
         for deliver_note_item in deliver_note_items:
             item = frappe.get_doc("Item", {"item_code": deliver_note_item.item_code})
-            print("item: {0}".format(item))
+            print "item: {0}".format(item)
             qty += deliver_note_item.qty
             # weight += item.weightage
             desc += str(deliver_note_item.qty) + " " + item.item_name + "\n"
@@ -199,6 +199,7 @@ class GenerateCnoteRequest(BaseRequest, object):
             weight = 1
 
         goodsvalue = delivery_note.total
+        # frappe.msgprint("olshop_goodsvalue: {o}".format(o=goodsvalue))
 
         self.set_olshop_qty(qty)
         self.set_olshop_weight(weight)
@@ -207,87 +208,115 @@ class GenerateCnoteRequest(BaseRequest, object):
 
     def set_username(self, username):
         self.username = username
+        # frappe.msgprint("usename: {u}".format(u=username))
 
     def set_api_key(self, api_key):
         self.api_key = api_key
+        # frappe.msgprint("api_key: {a}".format(a=api_key))
 
     def set_olshop_branch(self, olshop_branch):
         self.olshop_branch = olshop_branch
+        # frappe.msgprint("olshop_branch: {a}".format(a=olshop_branch))
 
     def set_olshop_cust(self, olshop_cust):
         self.olshop_cust = olshop_cust
+        # frappe.msgprint("olshop_cust: {a}".format(a=olshop_cust))
 
     def set_olshop_orig(self, olshop_orig):
         self.olshop_orig = olshop_orig
+        # frappe.msgprint("olshop_orig: {a}".format(a=olshop_orig))
 
     def set_olshop_orderid(self, olshop_orderid):
         self.olshop_orderid = olshop_orderid
+        # frappe.msgprint("olshop_orderid: {a}".format(a=olshop_orderid))
 
     def set_olshop_shipper_name(self, olshop_shipper_name):
         self.olshop_shipper_name = olshop_shipper_name
+        # frappe.msgprint("olshop_shipper_name: {a}".format(a=olshop_shipper_name))
 
     def set_olshop_shipper_addr1(self, olshop_shipper_addr1):
         self.olshop_shipper_addr1 = olshop_shipper_addr1
+        # frappe.msgprint("olshop_shipper_addr1: {a}".format(a=olshop_shipper_addr1))
 
     def set_olshop_shipper_addr2(self, olshop_shipper_addr2):
         self.olshop_shipper_addr2 = olshop_shipper_addr2
+        # frappe.msgprint("olshop_shipper_addr2: {a}".format(a=olshop_shipper_addr2))
 
     def set_olshop_shipper_addr3(self, olshop_shipper_addr3):
         self.olshop_shipper_addr3 = olshop_shipper_addr3
+        # frappe.msgprint("olshop_shipper_addr3: {a}".format(a=olshop_shipper_addr3))
 
     def set_olshop_shipper_city(self, olshop_shipper_city):
         self.olshop_shipper_city = olshop_shipper_city
+        # frappe.msgprint("olshop_shipper_city: {a}".format(a=olshop_shipper_city))
 
     def set_olshop_shipper_region(self, olshop_shipper_region):
         self.olshop_shipper_region = olshop_shipper_region
+        # frappe.msgprint("olshop_shipper_region: {a}".format(a=olshop_shipper_region))
 
     def set_olshop_shipper_zip(self, olshop_shipper_zip):
         self.olshop_shipper_zip = olshop_shipper_zip
+        # frappe.msgprint("olshop_shipper_zip: {a}".format(a=olshop_shipper_zip))
 
     def set_olshop_shipper_phone(self, olshop_shipper_phone):
         self.olshop_shipper_phone = olshop_shipper_phone
+        # frappe.msgprint("olshop_shipper_phone: {a}".format(a=olshop_shipper_phone))
 
     def set_olshop_receiver_name(self, olshop_receiver_name):
         self.olshop_receiver_name = olshop_receiver_name
+        # frappe.msgprint("olshop_receiver_name: {a}".format(a=olshop_receiver_name))
 
     def set_olshop_receiver_addr1(self, olshop_receiver_addr1):
         self.olshop_receiver_addr1 = olshop_receiver_addr1
+        # frappe.msgprint("olshop_receiver_addr1: {a}".format(a=olshop_receiver_addr1))
 
     def set_olshop_receiver_addr2(self, olshop_receiver_addr2):
         self.olshop_receiver_addr2 = olshop_receiver_addr2
+        # frappe.msgprint("olshop_receiver_addr2: {a}".format(a=olshop_receiver_addr2))
 
     def set_olshop_receiver_addr3(self, olshop_receiver_addr3):
         self.olshop_receiver_addr3 = olshop_receiver_addr3
+        # frappe.msgprint("olshop_receiver_addr3: {a}".format(a=olshop_receiver_addr3))
 
     def set_olshop_receiver_city(self, olshop_receiver_city):
         self.olshop_receiver_city = olshop_receiver_city
+        # frappe.msgprint("olshop_receiver_city: {a}".format(a=olshop_receiver_city))
 
     def set_olshop_receiver_region(self, olshop_receiver_region):
         self.olshop_receiver_region = olshop_receiver_region
+        # frappe.msgprint("olshop_receiver_region: {a}".format(a=olshop_receiver_region))
 
     def set_olshop_receiver_zip(self, olshop_receiver_zip):
         self.olshop_receiver_zip = olshop_receiver_zip
+        # frappe.msgprint("olshop_receiver_zip: {a}".format(a=olshop_receiver_zip))
 
     def set_olshop_receiver_phone(self, olshop_receiver_phone):
         self.olshop_receiver_phone = olshop_receiver_phone
+        # frappe.msgprint("olshop_receiver_phone: {a}".format(a=olshop_receiver_phone))
 
     def set_olshop_dest(self, olshop_dest):
         self.olshop_dest = olshop_dest
+        # frappe.msgprint("olshop_dest: {a}".format(a=olshop_dest))
 
     def set_olshop_qty(self, olshop_qty):
         self.olshop_qty = olshop_qty
+        # frappe.msgprint("olshop_qty: {a}".format(a=olshop_qty))
 
     def set_olshop_weight(self, olshop_weight):
         self.olshop_weight = olshop_weight
+        # frappe.msgprint("olshop_weight: {a}".format(a=olshop_weight))
 
     def set_olshop_goodsdesc(self, olshop_goodsdesc):
         self.olshop_goodsdesc = olshop_goodsdesc
+        # frappe.msgprint("olshop_goodsdesc: {a}".format(a=olshop_goodsdesc))
 
     def set_olshop_goodsvalue(self, olshop_goodsvalue):
         self.olshop_goodsvalue = olshop_goodsvalue
+        # frappe.msgprint("olshop_goodsvalue: {a}".format(a=olshop_goodsvalue))
 
     def set_olshop_service(self, olshop_service):
         self.olshop_service = olshop_service
+        # frappe.msgprint("olshop_service: {a}".format(a=olshop_service))
 
 
 
